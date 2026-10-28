@@ -1,0 +1,50 @@
+@model List<InventoryManagement.Models.Product>
+@{ ViewBag.Title = "Inventory"; }
+
+<div class="heading">
+    <div>
+        <h1>Inventory Management</h1>
+        <p>Manage product stock and prices.</p>
+    </div>
+    @Html.ActionLink("+ Add Product", "Create", null, new { @class = "button" })
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="success">@TempData["Success"]</div>
+}
+
+<p><strong>Total Products: @Model.Count</strong></p>
+
+<div class="panel table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th><th>Product Name</th><th>Category</th>
+                <th>Quantity</th><th>Price (INR)</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Category</td>
+                <td>@product.Quantity</td>
+                <td>@product.Price.ToString("F2")</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = product.Id })
+                    |
+                    @Html.ActionLink("Delete", "Delete", new { id = product.Id })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    @if (Model.Count == 0)
+    {
+        <p>No products found. Add your first product.</p>
+    }
+</div>

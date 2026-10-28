@@ -1,0 +1,41 @@
+@model InventoryManagement.Models.Product
+@{
+    var action = Model.Id == 0 ? "Create" : "Edit";
+    ViewBag.Title = Model.Id == 0 ? "Add Product" : "Edit Product";
+}
+
+<h1>@ViewBag.Title</h1>
+<p>Enter product details. Price is in INR.</p>
+
+@using (Html.BeginForm(action, "Product", new { id = Model.Id }, FormMethod.Post, new { @class = "panel" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "Please correct the following errors:")
+
+    <div class="field">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { maxlength = 80 })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+
+    <div class="field">
+        @Html.LabelFor(m => m.Category)
+        @Html.TextBoxFor(m => m.Category, new { maxlength = 50 })
+        @Html.ValidationMessageFor(m => m.Category)
+    </div>
+
+    <div class="field">
+        @Html.LabelFor(m => m.Quantity)
+        @Html.TextBoxFor(m => m.Quantity, new { type = "number", min = "0", max = "1000000" })
+        @Html.ValidationMessageFor(m => m.Quantity)
+    </div>
+
+    <div class="field">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, "{0:0.00}", new { type = "number", min = "0.01", max = "9999999.99", step = "0.01" })
+        @Html.ValidationMessageFor(m => m.Price)
+    </div>
+
+    <button type="submit">Save Product</button>
+    @Html.ActionLink("Cancel", "Index", null, new { @class = "secondary" })
+}
